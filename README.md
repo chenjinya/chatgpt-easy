@@ -12,7 +12,7 @@ npm install
 
 ## How to use ?
 
-![example]('https://github.com/chatgpt-easy/ora/blob/main/example.png')
+![example]('https://github.com/chenjinya/chatgpt-easy/blob/main/example.png')
 
 ```shell
 export OPENAI_KEY='OPENAI_KEY'
