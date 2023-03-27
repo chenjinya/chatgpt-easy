@@ -31,7 +31,7 @@ async function run (messages){
         
         return completion.data
     } catch(e) {
-        console.error(e)
+        console.error(e.message)
         return null
     }
 }
@@ -45,7 +45,7 @@ function sleep(ms) {
     return new Promise(resolve=>setTimeout(resolve, ms))
 }
 async function main() {
-    const spinner = ora("ChatGPT is thinking...")
+    
     let assistantSystem = defaultSystem
     
     readlineReaction.question(`请输入助手的设定 ?(default: ${assistantSystem})\n`, async (sys) => {
@@ -59,19 +59,44 @@ async function main() {
             }
         ]
         
-        readlineReaction.question(`请输入你的问题?\n`, async (input) => {
-            readlineReaction.close()
+        while(true) {
+            await waitreaction(messages)
+        }
+       
+    })
+}
+
+function waitreaction(messages) {
+    return new Promise((resolve, reject) => {
+        readlineReaction.resume()
+        readlineReaction.question(`\n请输入你的问题?\n`, async (input) => {
+            readlineReaction.pause()
+            if(!input) {
+                console.log("💥 请输入问题")
+                resolve && resolve()
+                return
+            }
+            const spinner = ora("🤯 ChatGPT is thinking...")
             messages.push({
                 "role": "user", 
                 "content": input
             })
             spinner.start();
             await sleep(1)
-            const ans = await run(messages)
-            spinner.succeed('completion:')
-            if (ans && ans.choices.length > 0) {
-                let m = ans.choices[0].message['content']
-                console.log(m)
+            try {
+                const ans = await run(messages)
+                spinner.succeed('🤖:')
+                if (ans && ans.choices.length > 0) {
+                    let m = ans.choices[0].message['content']
+                    console.log(m)
+                    messages.push({
+                        "role": "assistant", 
+                        "content": m
+                    })
+                    resolve && resolve()
+                }
+            } catch(e) {
+                reject && reject(e)
             }
         })
     })
