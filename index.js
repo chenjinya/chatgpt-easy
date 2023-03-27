@@ -13,13 +13,7 @@ const openai = new OpenAIApi(new Configuration({
   apiKey: process.env.OPENAI_KEY,
 }));
 
-const system = 'You are a awesome assistant!'
-let messages = [
-    {
-        "role": "system", 
-        "content": system
-    }
-]
+const defaultSystem = 'You are a awesome assistant!'
 
 // https://platform.openai.com/docs/guides/chat/introduction
 async function run (messages){
@@ -52,21 +46,34 @@ function sleep(ms) {
 }
 async function main() {
     const spinner = ora("ChatGPT is thinking...")
-    readlineReaction.question(`请输入你的问题?\n`, async (input) => {
-        readlineReaction.close()
-        messages.push({
-            "role": "user", 
-            "content": input
-        })
+    let assistantSystem = defaultSystem
     
-        spinner.start();
-        await sleep(1)
-        const ans = await run(messages)
-        spinner.succeed('completion:')
-        if (ans && ans.choices.length > 0) {
-            let m = ans.choices[0].message['content']
-            console.log(m)
+    readlineReaction.question(`请输入助手的设定 ?(default: ${assistantSystem})\n`, async (sys) => {
+        if (sys) {
+            assistantSystem = sys
         }
+        let messages = [
+            {
+                "role": "system", 
+                "content": assistantSystem
+            }
+        ]
+        
+        readlineReaction.question(`请输入你的问题?\n`, async (input) => {
+            readlineReaction.close()
+            messages.push({
+                "role": "user", 
+                "content": input
+            })
+            spinner.start();
+            await sleep(1)
+            const ans = await run(messages)
+            spinner.succeed('completion:')
+            if (ans && ans.choices.length > 0) {
+                let m = ans.choices[0].message['content']
+                console.log(m)
+            }
+        })
     })
 }
 main()
