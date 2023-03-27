@@ -2,6 +2,7 @@
 import ora from 'ora'
 import OpenAI from 'openai'
 import readline from 'readline'
+import fs from 'fs'
 const readlineReaction = readline.createInterface({
     input: process.stdin,
     output: process.stdout
@@ -13,7 +14,7 @@ const openai = new OpenAIApi(new Configuration({
   apiKey: process.env.OPENAI_KEY,
 }));
 
-const defaultSystem = 'You are a awesome assistant!'
+const defaultSystem = 'You are an awesome assistant!'
 
 // https://platform.openai.com/docs/guides/chat/introduction
 async function run (messages){
@@ -93,6 +94,12 @@ function waitreaction(messages) {
                         "role": "assistant", 
                         "content": m
                     })
+       
+                    fs.writeFile(`./snapshot/${messages[1].content.substr(0, 50)}.json`, JSON.stringify(messages), (err) => {
+                        if(err) {
+                            console.error(err)
+                        }
+                      });
                     resolve && resolve()
                 }
             } catch(e) {
