@@ -38,4 +38,10 @@ npm run chat
 ```
 
 
+### Windows OS
+
+```cmd
+set OPENAI_KEY='xxxx' 
+npm run chat
+```
 
