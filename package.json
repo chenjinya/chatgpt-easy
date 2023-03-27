@@ -1,0 +1,30 @@
+{
+  "type": "module",
+  "name": "chatgpt-easy",
+  "version": "1.0.0",
+  "description": "ChatGPT OpenAI API fast startup",
+  "main": "index.js",
+  "scripts": {
+    "chat": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chenjinya/chatgpt-easy.git"
+  },
+  "keywords": [
+    "chatgpt",
+    "gpt",
+    "openai"
+  ],
+  "author": "jinyachen@foxmail.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/chenjinya/chatgpt-easy/issues"
+  },
+  "homepage": "https://github.com/chenjinya/chatgpt-easy#readme",
+  "dependencies": {
+    "openai": "^3.2.1",
+    "ora": "^6.3.0"
+  }
+}
