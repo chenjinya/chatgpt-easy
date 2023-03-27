@@ -11,7 +11,7 @@ ChatGPT OpenAI API fast startup
 ## Prepare for env in CentOS 
 
 ```shell
-yum install git nodejs vim
+yum install git nodejs vim -y
 ```
 
 ## Prepare for env in Ubuntu 
