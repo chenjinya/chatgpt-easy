@@ -8,6 +8,9 @@ ChatGPT OpenAI API fast startup
 
 注册送 10$, 使用 新加坡实例最小 size: 1u 512MB 4$/month。
 
+![example](https://github.com/chenjinya/chatgpt-easy/blob/main/digitalocean.png)
+
+
 ## Prepare for env in CentOS 
 
 ```shell
