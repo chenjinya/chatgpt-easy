@@ -8,47 +8,36 @@ const readlineReaction = readline.createInterface({
     output: process.stdout
   })
 
-const Configuration = OpenAI.Configuration
-const OpenAIApi = OpenAI.OpenAIApi
-const openai = new OpenAIApi(new Configuration({
-  apiKey: process.env.OPENAI_KEY,
-}));
+const openai = new OpenAI({
+    baseURL: 'https://api.openai.com/v1',
+    // apiKey: '{API_KEY}',
+});
 
 const defaultSystem = 'You are an awesome assistant!'
 
 // https://platform.openai.com/docs/guides/chat/introduction
 async function run (messages){
     try {
-        const completion = await openai.createChatCompletion({
+        const completion = await openai.chat.completions.create({
             model: "gpt-3.5-turbo",
             messages: messages,
             temperature: 0.8, // 每次返回的答案的相似度0-1（0：每次都一样，1：每次都不一样）
             max_tokens: 1000,
           });
-        // if (completion.data && completion.data.choices.length > 0) {
-        //     let m = completion.data.choices[0].message['content']
-        //     console.log(m)
-        // }
-        
-        return completion.data
+        return JSON.parse(completion)
     } catch(e) {
         console.error(e.message)
         return null
     }
 }
 
-// function showMessages(messages){
-//     for(let i of messages) {
-//         console.log(i.role, ':', i.content)
-//     }
-// }
+
 function sleep(ms) {
     return new Promise(resolve=>setTimeout(resolve, ms))
 }
 async function main() {
     
     let assistantSystem = defaultSystem
-    
     readlineReaction.question(`请输入助手的设定 ?(default: ${assistantSystem})\n`, async (sys) => {
         if (sys) {
             assistantSystem = sys
